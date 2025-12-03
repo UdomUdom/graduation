@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Graduation Gift Shop</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Poppins:wght@400;600&display=swap"
+            rel="stylesheet"
+        />
+
+        <style>
+            /* --- KEEP YOUR EXISTING CSS VARIABLES & STYLES --- */
+            :root {
+                --c-blue: #9cc6db;
+                --c-cream: #fcf6d9;
+                --c-orange: #cf4b00;
+                --c-gold: #ddba7d;
+                --text-dark: #333;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: "Poppins", "Kanit", sans-serif;
+                background-color: var(--c-cream);
+                color: var(--text-dark);
+                overflow-x: hidden;
+                padding-bottom: 50px;
+            }
+
+            /* ... (Keep all previous styles for Modals, Cards, Header, etc.) ... */
+            /* To save space, I am only showing the NEW styles for the map below */
+
+            /* --- ADD THIS NEW CSS FOR THE MAP --- */
+            .map-frame {
+                width: 100%; /* Full width of the FAQ box */
+                height: 300px; /* Fixed height */
+                border: 0;
+                border-radius: 8px; /* Rounded corners */
+                margin-top: 15px; /* Space between text and map */
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* (Include the rest of your previous CSS here) */
+            /* ... */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: opacity 0.3s ease;
+            }
+            #language-modal {
+                background-color: var(--c-blue);
+                flex-direction: column;
+            }
+            #qr-modal {
+                background-color: rgba(0, 0, 0, 0.6);
+                display: none;
+                opacity: 0;
+            }
+            #qr-modal.show {
+                display: flex;
+                opacity: 1;
+            }
+            .modal-card {
+                background: var(--c-cream);
+                padding: 2rem;
+                border-radius: 15px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                border: 4px solid var(--c-gold);
+                max-width: 400px;
+                width: 90%;
+                position: relative;
+            }
+            .lang-btn {
+                display: block;
+                width: 200px;
+                margin: 10px auto;
+                padding: 15px;
+                font-size: 1.2rem;
+                border: none;
+                border-radius: 8px;
+                background-color: var(--c-orange);
+                color: white;
+                cursor: pointer;
+                transition:
+                    transform 0.2s,
+                    background 0.2s;
+                font-family: "Kanit", sans-serif;
+            }
+            .lang-btn:hover {
+                background-color: var(--c-gold);
+                transform: scale(1.05);
+                color: var(--text-dark);
+            }
+            #main-site {
+                display: none;
+                opacity: 0;
+                transition: opacity 0.5s ease;
+            }
+            header {
+                background-color: var(--c-blue);
+                padding: 2rem 1rem;
+                text-align: center;
+                border-bottom: 5px solid var(--c-gold);
+            }
+            h1 {
+                font-size: 3rem;
+                color: white;
+                text-shadow: 2px 2px 0px var(--c-orange);
+                margin-bottom: 10px;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+                color: #fff;
+            }
+            .controls {
+                padding: 20px;
+                text-align: center;
+                background: white;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            }
+            select {
+                padding: 10px;
+                font-size: 1rem;
+                border: 2px solid var(--c-gold);
+                border-radius: 5px;
+                background: var(--c-cream);
+                color: var(--text-dark);
+                outline: none;
+                font-family: "Kanit", sans-serif;
+            }
+            .gift-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 25px;
+            }
+            .card {
+                background: white;
+                border-radius: 12px;
+                overflow: hidden;
+                border: 2px solid var(--c-blue);
+                transition: transform 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(156, 198, 219, 0.4);
+                border-color: var(--c-orange);
+            }
+            .card-emoji {
+                font-size: 5rem;
+                text-align: center;
+                background-color: var(--c-cream);
+                padding: 20px 0;
+            }
+            .card-details {
+                padding: 20px;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .tier-badge {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: var(--c-gold);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            .product-name {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: var(--text-dark);
+            }
+            .price {
+                font-size: 1.2rem;
+                color: var(--c-orange);
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+            .buy-btn {
+                margin-top: auto;
+                width: 100%;
+                padding: 12px;
+                background-color: var(--c-orange);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.2s;
+                font-weight: 600;
+            }
+            .buy-btn:hover {
+                background-color: var(--text-dark);
+            }
+            .faq-section {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+            }
+            .faq-header {
+                text-align: center;
+                color: var(--c-orange);
+                margin-bottom: 20px;
+                font-size: 2rem;
+                text-transform: uppercase;
+            }
+            details {
+                background-color: white;
+                margin-bottom: 15px;
+                border: 2px solid var(--c-blue);
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            summary {
+                padding: 15px;
+                cursor: pointer;
+                background-color: var(--c-blue);
+                color: white;
+                font-weight: 600;
+                list-style: none;
+                position: relative;
+            }
+            summary::after {
+                content: "▼";
+                position: absolute;
+                right: 20px;
+                transition: transform 0.3s;
+            }
+            details[open] summary::after {
+                transform: rotate(180deg);
+            }
+            details[open] summary {
+                background-color: var(--c-gold);
+                color: var(--text-dark);
+            }
+            .faq-content {
+                padding: 20px;
+                color: #555;
+                line-height: 1.6;
+                border-top: 1px solid #eee;
+            }
+            .close-qr {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 2rem;
+                color: var(--c-orange);
+                cursor: pointer;
+                font-weight: bold;
+            }
+            .qr-title {
+                margin-bottom: 10px;
+                color: var(--c-blue);
+            }
+            .qr-img {
+                width: 200px;
+                height: 200px;
+                margin: 15px auto;
+                border: 2px dashed var(--c-gold);
+                padding: 10px;
+                background: white;
+                display: block;
+            }
+            .qr-desc {
+                font-size: 0.9rem;
+                color: #666;
+                margin-bottom: 20px;
+            }
+            .confirm-btn {
+                background-color: var(--c-blue);
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1rem;
+            }
+            .confirm-btn:hover {
+                background-color: var(--c-orange);
+            }
+            @media (max-width: 600px) {
+                h1 {
+                    font-size: 2rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Language Overlay -->
+        <div id="language-modal" class="modal-overlay">
+            <div class="modal-card">
+                <div style="font-size: 4rem; margin-bottom: 10px">🎓</div>
+                <h2 style="margin-bottom: 20px; color: var(--c-orange)">
+                    Welcome / ยินดีต้อนรับ
+                </h2>
+                <button class="lang-btn" onclick="setLanguage('th')">
+                    ภาษาไทย
+                </button>
+                <button class="lang-btn" onclick="setLanguage('en')">
+                    English
+                </button>
+            </div>
+        </div>
+
+        <!-- QR Code Modal -->
+        <div id="qr-modal" class="modal-overlay" onclick="closeQrModal(event)">
+            <div class="modal-card" onclick="event.stopPropagation()">
+                <span class="close-qr" onclick="closeQrModal()">&times;</span>
+                <h2 id="qr-header" class="qr-title">Scan to Pay</h2>
+                <p
+                    id="qr-item-name"
+                    style="font-weight: bold; font-size: 1.2rem"
+                ></p>
+                <img id="qr-image" class="qr-img" src="" alt="QR Code" />
+                <p id="qr-instruction" class="qr-desc">
+                    Please scan this QR code with your banking app.
+                </p>
+                <button class="confirm-btn" onclick="closeQrModal()">
+                    Done / เสร็จสิ้น
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Website -->
+        <div id="main-site">
+            <header>
+                <h1 id="site-title">Graduation</h1>
+                <p class="subtitle" id="site-subtitle">
+                    Celebrate their success with the perfect gift!
+                </p>
+            </header>
+
+            <div class="controls">
+                <label for="sort-select" id="sort-label">Sort by:</label>
+                <select id="sort-select" onchange="sortProducts()">
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="tier">Tier (Level)</option>
+                </select>
+            </div>
+
+            <div class="gift-container" id="product-grid"></div>
+
+            <div class="faq-section">
+                <h2 class="faq-header" id="faq-main-title">FAQ</h2>
+
+                <!-- Answer 1 will now contain the map -->
+                <details>
+                    <summary id="faq-q1">Where is the place?</summary>
+                    <div class="faq-content">
+                        <p id="faq-a1">We are located at...</p>
+                        <!-- Map will be injected here via JS -->
+                    </div>
+                </details>
+
+                <details>
+                    <summary id="faq-q2">How to use?</summary>
+                    <div class="faq-content">
+                        <p id="faq-a2">Select gift and pay via QR code.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <script>
+            const products = [
+                {
+                    id: 1,
+                    nameEn: "Congratulations Card",
+                    nameTh: "การ์ดแสดงความยินดี",
+                    price: 50,
+                    tier: 1,
+                    emoji: "💌",
+                },
+                {
+                    id: 2,
+                    nameEn: "Single Sunflower",
+                    nameTh: "ดอกทานตะวัน 1 ดอก",
+                    price: 150,
+                    tier: 1,
+                    emoji: "🌻",
+                },
+                {
+                    id: 3,
+                    nameEn: "Teddy Bear",
+                    nameTh: "ตุ๊กตาหมีบัณฑิต",
+                    price: 390,
+                    tier: 2,
+                    emoji: "🧸",
+                },
+                {
+                    id: 4,
+                    nameEn: "Chocolate Box",
+                    nameTh: "กล่องช็อกโกแลต",
+                    price: 250,
+                    tier: 1,
+                    emoji: "🍫",
+                },
+                {
+                    id: 5,
+                    nameEn: "Flower Bouquet",
+                    nameTh: "ช่อดอกไม้ใหญ่",
+                    price: 890,
+                    tier: 2,
+                    emoji: "💐",
+                },
+                {
+                    id: 6,
+                    nameEn: "Luxury Pen Set",
+                    nameTh: "ปากกาหรู",
+                    price: 1500,
+                    tier: 3,
+                    emoji: "✒️",
+                },
+                {
+                    id: 7,
+                    nameEn: "Smart Watch",
+                    nameTh: "สมาร์ทวอทช์",
+                    price: 4500,
+                    tier: 3,
+                    emoji: "⌚",
+                },
+                {
+                    id: 8,
+                    nameEn: "Travel Backpack",
+                    nameTh: "กระเป๋าเดินทาง",
+                    price: 1200,
+                    tier: 2,
+                    emoji: "🎒",
+                },
+                {
+                    id: 9,
+                    nameEn: "Golden Trophy",
+                    nameTh: "ถ้วยรางวัลทองคำ",
+                    price: 600,
+                    tier: 2,
+                    emoji: "🏆",
+                },
+                {
+                    id: 10,
+                    nameEn: "Balloon Set",
+                    nameTh: "เซ็ตลูกโป่ง",
+                    price: 450,
+                    tier: 1,
+                    emoji: "🎈",
+                },
+            ];
+
+            let currentLang = "en";
+
+            // --- MAP EMBED CODE ---
+            // 1. Go to Google Maps -> Search for your location -> Share -> Embed a map
+            // 2. Copy the <iframe src="..."> part.
+            // 3. Paste the URL inside the src='' below.
+            const mapURL =
+                "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3871.887333203864!2d100.58472227494653!3d13.965311292314736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2819baccbda59%3A0x2825f5ce963d9548!2z4Lit4Liy4LiE4Liy4Lij4Lij4Lix4LiV4LiZ4LiE4Li44LiT4Liy4LiB4LijICjguJXguLbguIEgMTEp!5e0!3m2!1sth!2sth!4v1764782275145!5m2!1sth!2sth";
+
+            // We create a reusable HTML string for the map
+            const mapHTML = `<iframe class="map-frame" src="${mapURL}" allowfullscreen="" loading="lazy"></iframe>`;
+
+            const content = {
+                en: {
+                    title: "Graduation Celebration",
+                    subtitle: "Find the perfect gift for the graduate.",
+                    sortLabel: "Sort by: ",
+                    sortOptions: [
+                        "Price: Low to High",
+                        "Price: High to Low",
+                        "Tier (Level)",
+                    ],
+                    buyBtn: "Click to Buy",
+                    tiers: ["Standard", "Premium", "Special"],
+                    currency: "THB",
+                    faqTitle: "Frequently Asked Questions",
+                    q1: "📍 Where is the place?",
+                    // We append the mapHTML to the text answer
+                    a1:
+                        "Located at building 11, near the Football Field.<br>" +
+                        mapHTML,
+                    q2: "❓ How to use?",
+                    a2: "1. Choose gift. 2. Scan QR Code.",
+                    qrHeader: "Scan to Pay",
+                    qrInstruction: "Please scan with your banking app.",
+                },
+                th: {
+                    title: "ฉลองรับปริญญา",
+                    subtitle: "ของขวัญสุดพิเศษสำหรับบัณฑิตใหม่",
+                    sortLabel: "เรียงตาม: ",
+                    sortOptions: [
+                        "ราคา: น้อยไปมาก",
+                        "ราคา: มากไปน้อย",
+                        "ระดับความพรีเมียม",
+                    ],
+                    buyBtn: "คลิกเพื่อซื้อ",
+                    tiers: ["มาตรฐาน", "พรีเมียม", "สุดพิเศษ"],
+                    currency: "บาท",
+                    faqTitle: "คำถามที่พบบ่อย",
+                    q1: "📍 สถานที่อยู่ที่ไหน?",
+                    // We append the mapHTML to the text answer
+                    a1:
+                        "ตั้งอยู่ที่ตึก 11 เลยศาลากลางน้ำตรงข้ามสนามฟุตบอล<br>" +
+                        mapHTML,
+                    q2: "❓ ใช้งานอย่างไร?",
+                    a2: "1. เลือกของขวัญ 2. สแกน QR Code เพื่อจ่ายเงิน",
+                    qrHeader: "สแกนเพื่อจ่ายเงิน",
+                    qrInstruction: "กรุณาสแกนด้วยแอปธนาคารของคุณ",
+                },
+            };
+
+            // ... (Keep existing functions: setLanguage, updateInterfaceText, sortProducts, renderProducts, openQrModal, closeQrModal) ...
+            function setLanguage(lang) {
+                currentLang = lang;
+                document.getElementById("language-modal").style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById("language-modal").style.display =
+                        "none";
+                    const main = document.getElementById("main-site");
+                    main.style.display = "block";
+                    void main.offsetWidth;
+                    main.style.opacity = "1";
+                }, 500);
+                updateInterfaceText();
+                renderProducts(products);
+            }
+
+            function updateInterfaceText() {
+                const t = content[currentLang];
+                document.getElementById("site-title").innerText = t.title;
+                document.getElementById("site-subtitle").innerText = t.subtitle;
+                document.getElementById("sort-label").innerText = t.sortLabel;
+                const select = document.getElementById("sort-select");
+                select.options[0].text = t.sortOptions[0];
+                select.options[1].text = t.sortOptions[1];
+                select.options[2].text = t.sortOptions[2];
+                document.getElementById("faq-main-title").innerText =
+                    t.faqTitle;
+                document.getElementById("faq-q1").innerText = t.q1;
+                document.getElementById("faq-a1").innerHTML = t.a1; // innerHTML allows the iframe to render
+                document.getElementById("faq-q2").innerText = t.q2;
+                document.getElementById("faq-a2").innerHTML = t.a2;
+                document.getElementById("qr-header").innerText = t.qrHeader;
+                document.getElementById("qr-instruction").innerText =
+                    t.qrInstruction;
+            }
+
+            function sortProducts() {
+                const method = document.getElementById("sort-select").value;
+                let sortedProducts = [...products];
+                if (method === "price-asc")
+                    sortedProducts.sort((a, b) => a.price - b.price);
+                else if (method === "price-desc")
+                    sortedProducts.sort((a, b) => b.price - a.price);
+                else if (method === "tier")
+                    sortedProducts.sort(
+                        (a, b) => b.tier - a.tier || b.price - a.price,
+                    );
+                renderProducts(sortedProducts);
+            }
+
+            function renderProducts(list) {
+                const container = document.getElementById("product-grid");
+                container.innerHTML = "";
+                const t = content[currentLang];
+                list.forEach((item) => {
+                    const name =
+                        currentLang === "th" ? item.nameTh : item.nameEn;
+                    const tierName = t.tiers[item.tier - 1];
+                    const cardHTML = `
+                    <div class="card">
+                        <span class="tier-badge">${tierName}</span>
+                        <div class="card-emoji">${item.emoji}</div>
+                        <div class="card-details">
+                            <h3 class="product-name">${name}</h3>
+                            <div class="price">${item.price.toLocaleString()} ${t.currency}</div>
+                            <button class="buy-btn" onclick="openQrModal('${name}', ${item.price})">${t.buyBtn}</button>
+                        </div>
+                    </div>
+                `;
+                    container.innerHTML += cardHTML;
+                });
+            }
+
+            function openQrModal(itemName, price) {
+                const t = content[currentLang];
+                const modal = document.getElementById("qr-modal");
+                const qrImg = document.getElementById("qr-image");
+                document.getElementById("qr-item-name").innerText =
+                    `${itemName} - ${price.toLocaleString()} ${t.currency}`;
+                const dataToEncode = `PAYMENT:${itemName}|PRICE:${price}`;
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(dataToEncode)}`;
+                modal.classList.add("show");
+            }
+
+            function closeQrModal(event) {
+                if (
+                    !event ||
+                    event.target.id === "qr-modal" ||
+                    event.target.classList.contains("close-qr") ||
+                    event.target.classList.contains("confirm-btn")
+                ) {
+                    document
+                        .getElementById("qr-modal")
+                        .classList.remove("show");
+                }
+            }
+        </script>
+    </body>
+</html>
