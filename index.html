@@ -10,7 +10,7 @@
         />
 
         <style>
-            /* --- KEEP YOUR EXISTING CSS VARIABLES & STYLES --- */
+            /* --- CSS VARIABLES --- */
             :root {
                 --c-blue: #9cc6db;
                 --c-cream: #fcf6d9;
@@ -18,6 +18,7 @@
                 --c-gold: #ddba7d;
                 --text-dark: #333;
             }
+
             * {
                 box-sizing: border-box;
                 margin: 0;
@@ -31,21 +32,7 @@
                 padding-bottom: 50px;
             }
 
-            /* ... (Keep all previous styles for Modals, Cards, Header, etc.) ... */
-            /* To save space, I am only showing the NEW styles for the map below */
-
-            /* --- ADD THIS NEW CSS FOR THE MAP --- */
-            .map-frame {
-                width: 100%; /* Full width of the FAQ box */
-                height: 300px; /* Fixed height */
-                border: 0;
-                border-radius: 8px; /* Rounded corners */
-                margin-top: 15px; /* Space between text and map */
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            /* (Include the rest of your previous CSS here) */
-            /* ... */
+            /* --- MODALS --- */
             .modal-overlay {
                 position: fixed;
                 top: 0;
@@ -58,10 +45,12 @@
                 align-items: center;
                 transition: opacity 0.3s ease;
             }
+
             #language-modal {
                 background-color: var(--c-blue);
                 flex-direction: column;
             }
+
             #qr-modal {
                 background-color: rgba(0, 0, 0, 0.6);
                 display: none;
@@ -71,6 +60,7 @@
                 display: flex;
                 opacity: 1;
             }
+
             .modal-card {
                 background: var(--c-cream);
                 padding: 2rem;
@@ -82,6 +72,8 @@
                 width: 90%;
                 position: relative;
             }
+
+            /* Buttons & Text */
             .lang-btn {
                 display: block;
                 width: 200px;
@@ -103,6 +95,8 @@
                 transform: scale(1.05);
                 color: var(--text-dark);
             }
+
+            /* Header & Main */
             #main-site {
                 display: none;
                 opacity: 0;
@@ -124,6 +118,8 @@
                 font-size: 1.2rem;
                 color: #fff;
             }
+
+            /* Controls */
             .controls {
                 padding: 20px;
                 text-align: center;
@@ -141,6 +137,8 @@
                 outline: none;
                 font-family: "Kanit", sans-serif;
             }
+
+            /* Product Grid */
             .gift-container {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -216,6 +214,8 @@
             .buy-btn:hover {
                 background-color: var(--text-dark);
             }
+
+            /* FAQ & Map */
             .faq-section {
                 max-width: 800px;
                 margin: 50px auto;
@@ -263,6 +263,17 @@
                 line-height: 1.6;
                 border-top: 1px solid #eee;
             }
+
+            .map-frame {
+                width: 100%;
+                height: 300px;
+                border: 0;
+                border-radius: 8px;
+                margin-top: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* QR Modal Content */
             .close-qr {
                 position: absolute;
                 top: 10px;
@@ -281,9 +292,10 @@
                 height: 200px;
                 margin: 15px auto;
                 border: 2px dashed var(--c-gold);
-                padding: 10px;
+                padding: 5px;
                 background: white;
                 display: block;
+                object-fit: contain;
             }
             .qr-desc {
                 font-size: 0.9rem;
@@ -302,6 +314,7 @@
             .confirm-btn:hover {
                 background-color: var(--c-orange);
             }
+
             @media (max-width: 600px) {
                 h1 {
                     font-size: 2rem;
@@ -335,7 +348,10 @@
                     id="qr-item-name"
                     style="font-weight: bold; font-size: 1.2rem"
                 ></p>
+
+                <!-- Dynamic Image Source -->
                 <img id="qr-image" class="qr-img" src="" alt="QR Code" />
+
                 <p id="qr-instruction" class="qr-desc">
                     Please scan this QR code with your banking app.
                 </p>
@@ -367,16 +383,13 @@
 
             <div class="faq-section">
                 <h2 class="faq-header" id="faq-main-title">FAQ</h2>
-
-                <!-- Answer 1 will now contain the map -->
                 <details>
                     <summary id="faq-q1">Where is the place?</summary>
                     <div class="faq-content">
                         <p id="faq-a1">We are located at...</p>
-                        <!-- Map will be injected here via JS -->
+                        <!-- Google Map Placeholder -->
                     </div>
                 </details>
-
                 <details>
                     <summary id="faq-q2">How to use?</summary>
                     <div class="faq-content">
@@ -406,14 +419,6 @@
                 },
                 {
                     id: 3,
-                    nameEn: "Teddy Bear",
-                    nameTh: "ตุ๊กตาหมีบัณฑิต",
-                    price: 390,
-                    tier: 2,
-                    emoji: "🧸",
-                },
-                {
-                    id: 4,
                     nameEn: "Chocolate Box",
                     nameTh: "กล่องช็อกโกแลต",
                     price: 250,
@@ -421,65 +426,36 @@
                     emoji: "🍫",
                 },
                 {
-                    id: 5,
+                    id: 4,
                     nameEn: "Flower Bouquet",
                     nameTh: "ช่อดอกไม้ใหญ่",
                     price: 890,
-                    tier: 2,
+                    tier: 1,
                     emoji: "💐",
                 },
                 {
-                    id: 6,
+                    id: 5,
                     nameEn: "Luxury Pen Set",
                     nameTh: "ปากกาหรู",
                     price: 1500,
-                    tier: 3,
+                    tier: 1,
                     emoji: "✒️",
                 },
                 {
-                    id: 7,
-                    nameEn: "Smart Watch",
-                    nameTh: "สมาร์ทวอทช์",
-                    price: 4500,
-                    tier: 3,
-                    emoji: "⌚",
-                },
-                {
-                    id: 8,
-                    nameEn: "Travel Backpack",
-                    nameTh: "กระเป๋าเดินทาง",
-                    price: 1200,
-                    tier: 2,
-                    emoji: "🎒",
-                },
-                {
-                    id: 9,
-                    nameEn: "Golden Trophy",
-                    nameTh: "ถ้วยรางวัลทองคำ",
-                    price: 600,
-                    tier: 2,
-                    emoji: "🏆",
-                },
-                {
-                    id: 10,
-                    nameEn: "Balloon Set",
-                    nameTh: "เซ็ตลูกโป่ง",
-                    price: 450,
+                    id: 6,
+                    nameEn: "Custom",
+                    nameTh: "กำหนดเอง",
+                    price: 1,
                     tier: 1,
-                    emoji: "🎈",
+                    emoji: "💰",
                 },
             ];
 
             let currentLang = "en";
 
-            // --- MAP EMBED CODE ---
-            // 1. Go to Google Maps -> Search for your location -> Share -> Embed a map
-            // 2. Copy the <iframe src="..."> part.
-            // 3. Paste the URL inside the src='' below.
+            // Google Map URL
             const mapURL =
                 "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3871.887333203864!2d100.58472227494653!3d13.965311292314736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2819baccbda59%3A0x2825f5ce963d9548!2z4Lit4Liy4LiE4Liy4Lij4Lij4Lix4LiV4LiZ4LiE4Li44LiT4Liy4LiB4LijICjguJXguLbguIEgMTEp!5e0!3m2!1sth!2sth!4v1764782275145!5m2!1sth!2sth";
-
-            // We create a reusable HTML string for the map
             const mapHTML = `<iframe class="map-frame" src="${mapURL}" allowfullscreen="" loading="lazy"></iframe>`;
 
             const content = {
@@ -493,7 +469,7 @@
                         "Tier (Level)",
                     ],
                     buyBtn: "Click to Buy",
-                    tiers: ["Standard", "Premium", "Special"],
+                    tiers: ["Gift"],
                     currency: "THB",
                     faqTitle: "Frequently Asked Questions",
                     q1: "📍 Where is the place?",
@@ -516,7 +492,7 @@
                         "ระดับความพรีเมียม",
                     ],
                     buyBtn: "คลิกเพื่อซื้อ",
-                    tiers: ["มาตรฐาน", "พรีเมียม", "สุดพิเศษ"],
+                    tiers: ["ของขวัญ"],
                     currency: "บาท",
                     faqTitle: "คำถามที่พบบ่อย",
                     q1: "📍 สถานที่อยู่ที่ไหน?",
@@ -531,7 +507,6 @@
                 },
             };
 
-            // ... (Keep existing functions: setLanguage, updateInterfaceText, sortProducts, renderProducts, openQrModal, closeQrModal) ...
             function setLanguage(lang) {
                 currentLang = lang;
                 document.getElementById("language-modal").style.opacity = "0";
@@ -559,7 +534,7 @@
                 document.getElementById("faq-main-title").innerText =
                     t.faqTitle;
                 document.getElementById("faq-q1").innerText = t.q1;
-                document.getElementById("faq-a1").innerHTML = t.a1; // innerHTML allows the iframe to render
+                document.getElementById("faq-a1").innerHTML = t.a1;
                 document.getElementById("faq-q2").innerText = t.q2;
                 document.getElementById("faq-a2").innerHTML = t.a2;
                 document.getElementById("qr-header").innerText = t.qrHeader;
@@ -604,14 +579,39 @@
                 });
             }
 
+            // --- NEW QR CODE LOGIC ---
             function openQrModal(itemName, price) {
                 const t = content[currentLang];
                 const modal = document.getElementById("qr-modal");
                 const qrImg = document.getElementById("qr-image");
+
+                document.getElementById("qr-header").innerText = t.qrHeader;
                 document.getElementById("qr-item-name").innerText =
                     `${itemName} - ${price.toLocaleString()} ${t.currency}`;
-                const dataToEncode = `PAYMENT:${itemName}|PRICE:${price}`;
-                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(dataToEncode)}`;
+                document.getElementById("qr-instruction").innerText =
+                    t.qrInstruction;
+
+                const pngName = price + "bht.png";
+                const jpgName = price + "bht.jpg";
+
+                // Try loading PNG first
+                qrImg.src = pngName;
+                qrImg.alt = "QR code for " + price + " " + t.currency;
+
+                // Set up fallback to JPG if PNG fails to load
+                qrImg.onerror = function () {
+                    // Prevent infinite loop if JPG also fails
+                    if (this.src.endsWith(jpgName)) {
+                        this.alt = t.qrImageMissing || "QR image not available";
+                        return;
+                    }
+                    // Try JPG
+                    this.src = jpgName;
+                    // Update alt text accordingly
+                    this.alt =
+                        "QR code for " + price + " " + t.currency + " (JPG)";
+                };
+
                 modal.classList.add("show");
             }
 
